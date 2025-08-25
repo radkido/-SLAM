@@ -1,0 +1,14 @@
+<launch>
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find navigation_param)/config/move_base_params.yaml" command="load"/>
+    <!-- 加载公共costmap参数，指定命名空间 -->
+    <rosparam file="$(find navigation_param)/config/rover_costmap_common.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find navigation_param)/config/rover_global_costmap.yaml" command="load" />
+
+    <rosparam file="$(find navigation_param)/config/rover_costmap_common.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find navigation_param)/config/rover_local_costmap.yaml" command="load" />
+
+    <rosparam file="$(find navigation_param)/config/rover_base_local_planner.yaml" command="load"/>
+  </node>
+</launch>
+

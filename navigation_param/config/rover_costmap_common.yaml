@@ -1,0 +1,61 @@
+############################################################
+#                 Costmap 配置文件注释版                  #
+#                   保持原参数不变                        #
+############################################################
+
+# ------------------- 顶层参数 ---------------------------
+# 激光或传感器检测障碍物的最大距离（米）
+obstacle_range: 3.0
+
+# 当障碍物消失时，用射线清除占用格子的最大距离（米）
+raytrace_range: 3.5
+
+# 机器人在地图上的轮廓，多边形坐标[x, y]
+footprint: [[-0.117, -0.1], [-0.117, 0.1], [0.117, 0.1], [0.117, -0.1]]
+
+# 膨胀半径，即障碍物周围被标记为高成本区域的距离（米）
+inflation_radius: 0.3
+
+# 膨胀代价值下降的指数速率
+cost_scaling_factor: 3.0
+
+# costmap 类型
+map_type: costmap
+
+# ------------------- 障碍物层 ---------------------------
+obstacle_layer:
+  enabled: true                    # 是否启用障碍物层
+  max_obstacle_height: 2.0         # 障碍物最大高度
+  min_obstacle_height: 0.0         # 障碍物最小高度
+  combination_method: 1            # 多层合并方法：1=取最大
+  track_unknown_space: true        # 标记未知空间为障碍
+  obstacle_range: 3.0              # 障碍物检测范围（米）
+  raytrace_range: 3.5              # 障碍物清除范围（米）
+  publish_voxel_map: false         # 是否发布体素地图
+  observation_sources: scan        # 数据来源传感器
+  scan:
+    sensor_frame: laser            # 激光坐标系
+    data_type: LaserScan           # 数据类型
+    topic: "scan"                  # 订阅话题
+    marking: true                  # 是否标记障碍物
+    clearing: true                 # 是否清除消失障碍物
+    expected_update_rate: 0        # 期望更新频率，0=随数据更新
+
+# ------------------- 膨胀层 ---------------------------
+inflation_layer:
+  enabled: true                    # 是否启用膨胀层
+  cost_scaling_factor: 1.0         # 膨胀代价值指数
+
+# ------------------- 静态地图层 -----------------------
+static_layer:
+  enabled: false                    # 是否启用静态地图层
+  map_topic: "/map"                # 使用的地图话题
+
+# ------------------- 注释说明 --------------------------
+# 1. obstacle_range 和 raytrace_range 决定障碍物标记和清除的范围。
+# 2. footprint 定义机器人自身在 costmap 中的轮廓。
+# 3. inflation_radius 决定膨胀区域大小，cost_scaling_factor 控制代价值下降速度。
+# 4. obstacle_layer 负责动态障碍物的标记与清除。
+# 5. inflation_layer 负责生成机器人周围安全缓冲区。
+# 6. static_layer 负责加载静态地图。
+# 7. expected_update_rate 为 0 表示每次收到传感器数据就更新，可能影响 Nano 性能。

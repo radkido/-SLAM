@@ -1,0 +1,44 @@
+<launch>
+   <!-- 是否使用仿真时间 -->
+   <param name="/use_sim_time" value="false" />
+
+   <!-- Cartographer SLAM核心节点 -->
+   <node name="cartographer_node"
+         pkg="cartographer_ros"
+         type="cartographer_node"
+         args="-configuration_directory $(find cartographer_ros)/configuration_files -configuration_basename cartographer.lua"
+         output="screen">
+         <!-- 如果你需要使用自定义里程计，可以取消下面的注释 -->
+         <!-- <remap from="odom" to="/mavros/local_position/odom" /> -->
+         <remap from="imu" to="/imu/imu_data" />
+   </node>
+
+   <!-- 发布2D占用栅格地图 -->
+   <node name="cartographer_occupancy_grid_node"
+         pkg="cartographer_ros"
+         type="cartographer_occupancy_grid_node"
+         output="screen">
+         <!-- 可根据需要调整分辨率和发布频率 -->
+         <param name="resolution" value="0.05" />
+         <param name="publish_period_sec" value="1.0" />
+   </node>
+
+   <!-- 机器人位姿发布器（如果需要，可以启用） -->
+   <!--
+   <node name="robot_pose_publisher"
+         pkg="robot_pose_publisher"
+         type="robot_pose_publisher"
+         respawn="false"
+         output="screen">
+         <param name="is_stamped" type="bool" value="true" />
+         <remap from="robot_pose" to="/mavros/vision_pose/pose" />
+   </node>
+   -->
+
+   <!-- 静态坐标变换发布器（激光雷达相对base_link的静态位置关系） -->
+   <!-- 请根据实际传感器安装位置调整参数 -->
+   <!--
+   <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster"
+         args="0 0 0 0 0 0 base_link laser 100" />
+   -->
+</launch>
