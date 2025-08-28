@@ -14,3 +14,10 @@ roslaunch cartographer_ros backpack_2d.launch
 
 movebase启动在cartographer这个backpack_2d里了
 
+
+cartographer用yahboom_map.launch就好，加入这个movebaselink即可SLAM
+
+
+
+
+
