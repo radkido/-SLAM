@@ -19,5 +19,9 @@ cartographer用yahboom_map.launch就好，加入这个movebaselink即可SLAM
 
 
 
+此项目cartographer只发布map到odom，yahboom文件在此之上还发布了odom到Baselink
+
+
+
 
 
